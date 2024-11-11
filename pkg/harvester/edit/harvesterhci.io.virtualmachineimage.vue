@@ -127,14 +127,23 @@ export default {
     showEditAsYaml() {
       return this.value.spec.sourceType === DOWNLOAD || this.value.spec.sourceType === CLONE;
     },
+
     radioGroupOptions() {
+      if (this.value.volumeEncryptionFeatureEnabled) {
+        return [
+          DOWNLOAD,
+          UPLOAD,
+          ENCRYPT,
+          DECRYPT
+        ];
+      }
+
       return [
         DOWNLOAD,
-        UPLOAD,
-        ENCRYPT,
-        DECRYPT
+        UPLOAD
       ];
     },
+
     storageClassOptions() {
       const inStore = this.$store.getters['currentProduct'].inStore;
       const storages = this.$store.getters[`${ inStore }/all`](STORAGE_CLASS);

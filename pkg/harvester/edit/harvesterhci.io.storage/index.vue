@@ -126,14 +126,17 @@ export default {
 
     const hash = {
       namespaces:           this.$store.dispatch(`${ inStore }/findAll`, { type: NAMESPACE }),
-      secrets:              this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET }),
       storages:             this.$store.dispatch(`${ inStore }/findAll`, { type: STORAGE_CLASS }),
       longhornNodes:        this.$store.dispatch(`${ inStore }/findAll`, { type: LONGHORN.NODES }),
       csiDrivers:           this.$store.dispatch(`${ inStore }/findAll`, { type: CSI_DRIVER })
     };
 
-    if (this.longhornV2LVMSupport) {
+    if (this.value.longhornV2LVMSupport) {
       hash.longhornV2DataEngine = this.$store.dispatch(`${ inStore }/find`, { type: LONGHORN.SETTINGS, id: LONGHORN_V2_DATA_ENGINE });
+    }
+
+    if (this.value.volumeEncryptionFeatureEnabled) {
+      hash.secrets = this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET });
     }
 
     await allHash(hash);
@@ -148,10 +151,6 @@ export default {
 
     modeOverride() {
       return this.isCreate ? _CREATE : _VIEW;
-    },
-
-    longhornV2LVMSupport() {
-      return this.$store.getters['harvester-common/getFeatureEnabled']('longhornV2LVMSupport');
     },
 
     provisioners() {

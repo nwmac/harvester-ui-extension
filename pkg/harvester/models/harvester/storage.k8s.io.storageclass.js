@@ -61,4 +61,12 @@ export default class HciStorageClass extends StorageClass {
   get isLonghornV2() {
     return this.provisioner === LONGHORN_DRIVER && this.longhornVersion === DATA_ENGINE_V2;
   }
+
+  get longhornV2LVMSupport() {
+    return this.$rootGetters['harvester-common/getFeatureEnabled']('longhornV2LVMSupport');
+  }
+
+  get volumeEncryptionFeatureEnabled() {
+    return this.$rootGetters['harvester-common/getFeatureEnabled']('volumeEncryption');
+  }
 }

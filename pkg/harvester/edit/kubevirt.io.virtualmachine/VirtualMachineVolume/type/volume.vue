@@ -284,7 +284,7 @@ export default {
         </InputOrDisplay>
       </div>
       <div
-        v-if="isView"
+        v-if="value.volumeEncryptionFeatureEnabled && isView"
         class="col span-6"
       >
         <LabelValue

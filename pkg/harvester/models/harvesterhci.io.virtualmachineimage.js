@@ -59,14 +59,14 @@ export default class HciVmImage extends HarvesterResource {
       },
       {
         action:   'encryptImage',
-        enabled:  !this.isEncrypted,
+        enabled:  this.volumeEncryptionFeatureEnabled && !this.isEncrypted,
         icon:     'icon icon-lock',
         label:    this.t('harvester.action.encryptImage'),
         disabled: !this.isReady,
       },
       {
         action:   'decryptImage',
-        enabled:  this.isEncrypted,
+        enabled:  this.volumeEncryptionFeatureEnabled && this.isEncrypted,
         icon:     'icon icon-unlock',
         label:    this.t('harvester.action.decryptImage'),
         disabled: !this.isReady,
@@ -379,6 +379,10 @@ export default class HciVmImage extends HarvesterResource {
       },
       ...out
     ];
+  }
+
+  get volumeEncryptionFeatureEnabled() {
+    return this.$rootGetters['harvester-common/getFeatureEnabled']('volumeEncryption');
   }
 
   download() {

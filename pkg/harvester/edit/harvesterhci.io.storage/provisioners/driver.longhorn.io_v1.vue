@@ -311,37 +311,39 @@ export default {
         </LabeledSelect>
       </div>
     </div>
-    <div class="row mt-20">
-      <RadioGroup
-        v-model:value="value.parameters.migratable"
-        name="layer3NetworkMode"
-        :label="t('harvester.storage.parameters.migratable.label')"
-        :mode="mode"
-        :options="migratableOptions"
-      />
-    </div>
-    <div class="row mt-20">
-      <RadioGroup
-        v-model:value="volumeEncryption"
-        name="volumeEncryption"
-        :label="t('harvester.storage.volumeEncryption')"
-        :mode="mode"
-        :options="volumeEncryptionOptions"
-      />
-    </div>
-    <div
-      v-if="value.parameters.encrypted === 'true'"
-      class="row mt-20"
-    >
-      <div class="col span-6">
-        <LabeledSelect
-          v-model:value="secret"
-          :label="t('harvester.storage.secret')"
-          :options="secretOptions"
+    <template v-if="value.volumeEncryptionFeatureEnabled">
+      <div class="row mt-20">
+        <RadioGroup
+          v-model:value="value.parameters.migratable"
+          name="layer3NetworkMode"
+          :label="t('harvester.storage.parameters.migratable.label')"
           :mode="mode"
+          :options="migratableOptions"
         />
       </div>
-    </div>
+      <div class="row mt-20">
+        <RadioGroup
+          v-model:value="volumeEncryption"
+          name="volumeEncryption"
+          :label="t('harvester.storage.volumeEncryption')"
+          :mode="mode"
+          :options="volumeEncryptionOptions"
+        />
+      </div>
+      <div
+        v-if="value.parameters.encrypted === 'true'"
+        class="row mt-20"
+      >
+        <div class="col span-6">
+          <LabeledSelect
+            v-model:value="secret"
+            :label="t('harvester.storage.secret')"
+            :options="secretOptions"
+            :mode="mode"
+          />
+        </div>
+      </div>
+    </template>
     <KeyValue
       v-model:value="parameters"
       :add-label="t('storageClass.longhorn.addLabel')"

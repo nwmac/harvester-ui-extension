@@ -29,10 +29,12 @@ export default {
   },
 
   async fetch() {
-    const inStore = this.$store.getters['currentProduct'].inStore;
+    if (this.value.volumeEncryptionFeatureEnabled) {
+      const inStore = this.$store.getters['currentProduct'].inStore;
 
-    this.secrets = await this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET });
-    this.images = await this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.IMAGE });
+      this.secrets = await this.$store.dispatch(`${ inStore }/findAll`, { type: SECRET });
+      this.images = await this.$store.dispatch(`${ inStore }/findAll`, { type: HCI.IMAGE });
+    }
   },
 
   data() {
@@ -104,6 +106,7 @@ export default {
 
       return this.value.encryptionSecret;
     },
+
     secretLink() {
       return this.secrets.find((sc) => sc.id === this.value.encryptionSecret)?.detailLocation;
     },
@@ -198,7 +201,7 @@ export default {
       </div>
 
       <div
-        v-if="value.isEncrypted"
+        v-if="value.volumeEncryptionFeatureEnabled && value.isEncrypted"
         class="row mb-20"
       >
         <div class="col span-12">
@@ -224,7 +227,7 @@ export default {
       </div>
 
       <div
-        v-if="isEncryptedOrDecrypted"
+        v-if="value.volumeEncryptionFeatureEnabled && isEncryptedOrDecrypted"
         class="row mb-20"
       >
         <div class="col span-12">
